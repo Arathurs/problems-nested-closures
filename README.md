@@ -19,3 +19,13 @@ This will keep the `bigdata` arg around until the end of the nested closer, or t
 Instead, calling a new function, can increase performance by taking `bigdata` out of scope as soon as it's called.
 
 Like so:
+```
+function processTwo(bigdata, cb) {
+  remoteCall(bigdata, function (err, something) {
+    //bigdata exits scope here
+    callStoreSomething(something, cb);
+  });
+}
+```
+
+Learn more by taking a look at `closureProblems.js`.
