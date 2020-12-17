@@ -1,7 +1,8 @@
 
 //Two Problems with Closures
 //Suppose we have a function that processes a large amount of data, and we choose to go the callback hell route. There are two main issues:
-//1). The big data variable is alive until the end of the nested closure, or rather the innermost closure. This prevents the garbage collector on client can't clean the data up. 
+//1). The big data variable is alive until the end of the nested closure, or rather the innermost closure. This prevents the garbage collector on client can't clean the data up. And naturally, this will take even more time, because you have a large amount of data to process.
+//2). The functions are very short lived, so also very hard to optimize and improve by the run-time. 
 function process (bigdata, cb) {
     remoteCall(bigdata, function(err, something) {
         storeSomething(something, function (err, res) {
@@ -9,5 +10,13 @@ function process (bigdata, cb) {
             // bigdata is still in scope!
             cb(null, res * 2);
         })        
+    })
+}
+
+// Avoid 
+function processTwo (bigdata, cb) {
+    remoteCall(bigdata, function(err, something) {
+        //bigdata exits scope here
+        callStoreSomething(something, cb);
     })
 }
